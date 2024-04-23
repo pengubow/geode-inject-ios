@@ -7,3 +7,4 @@ Maintainer: rooot
 Author: rooot
 Section: Tweaks
 Depends: mobilesubstrate (>= 0.9.5000)
+Icon: https://raw.githubusercontent.com/RoootTheFox/geode-inject-ios/meow/misc/icon.png
