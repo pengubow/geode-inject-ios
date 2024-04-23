@@ -1,3 +1,7 @@
 .theos/
 packages/
 .DS_Store
+
+# contains download url for Geode.ios.dylib
+# temporary placeholder until release or GH actions
+geode_download.h

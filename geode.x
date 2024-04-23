@@ -1,6 +1,14 @@
 #include <dlfcn.h>
 #include <Foundation/Foundation.h>
 
+#if __has_include("geode_download.h")
+#include "geode_download.h"
+#else
+#warning geode_download.h not found - create a file called geode_download.h with the following content:
+#warning #define GEODE_DOWNLOAD_URL @"https://your-url-to-download/Geode.ios.dylib"
+#error aborting compilation - see info above
+#endif
+
 void init_loadGeode(void) {
 	NSLog(@"mrow init_loadGeode");
 
@@ -18,11 +26,22 @@ void init_loadGeode(void) {
 
 	if (!geode_exists) {
 		NSLog(@"mrow geode dylib DOES NOT EXIST! downloading...");
-		// todo
-		return;
+		NSURL *url = [NSURL URLWithString:GEODE_DOWNLOAD_URL];
+		NSData *data = [NSData dataWithContentsOfURL:url];
+		if (data) {
+			if (![data writeToFile:geode_lib atomically:YES]) {
+				NSLog(@"mrow FAILED to download Geode: failed to save file");
+				return;
+			} else {
+				NSLog(@"mrow SUCCESS - downloaded Geode!");
+			}
+		} else {
+			NSLog(@"mrow FAILED to download Geode: no data");
+			return;
+		}
 	}
+
 	NSLog(@"mrow trying to load Geode library from %@", geode_lib);
 
-	//dlopen("/usr/lib/Geode.dylib", RTLD_LAZY);
 	dlopen([geode_lib UTF8String], RTLD_LAZY);
 }
