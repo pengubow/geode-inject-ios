@@ -24,6 +24,5 @@ __attribute__((constructor)) static void entry(int argc, char **argv, char *envp
     init_bypassDyldLibValidation();
     init_fixCydiaSubstrate();
 
-    // inject geode !!
-    dlopen("/usr/lib/Geode.dylib", RTLD_LAZY);
+    init_loadGeode();
 }
