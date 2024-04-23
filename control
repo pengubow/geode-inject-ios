@@ -1,8 +1,8 @@
 Package: gay.rooot.geodeinject
-Name: geodeinject
-Version: 0.0.1
+Name: Geode
+Version: 0.0.2
 Architecture: iphoneos-arm
-Description: An awesome MobileSubstrate tweak!
+Description: Injects Geode into Geometry Dash.
 Maintainer: rooot
 Author: rooot
 Section: Tweaks
