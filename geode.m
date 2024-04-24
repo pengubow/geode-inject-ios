@@ -23,7 +23,7 @@ void showAlert(NSString *tiddies, NSString *meows, bool remeowbutton) {
 		[alert addAction:fuckoff];
 
 		if (remeowbutton) {
-			UIAlertAction *restart = [UIAlertAction actionWithTitle:@"restart" style:UIAlertActionStyleDefault handler:nil];
+			UIAlertAction *restart = [UIAlertAction actionWithTitle:@"restart" style:UIAlertActionStyleDefault handler:^(UIAlertAction* _) { exit(0); }];
 			[alert addAction:restart];
 		}
 
