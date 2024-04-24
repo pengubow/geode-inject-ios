@@ -18,11 +18,20 @@ void init_loadGeode(void) {
 	NSString *geode_dir = [applicationSupportDirectory stringByAppendingString:@"/GeometryDash/game/geode"];
 	NSString *geode_lib = [geode_dir stringByAppendingString:@"/Geode.ios.dylib"];
 
+	bool is_dir;
+	NSFileManager *fm = [NSFileManager defaultManager];
+	if(![fm fileExistsAtPath:geode_dir isDirectory:&is_dir]) {
+		NSLog(@"mrow creating geode dir !!");
+		if(![fm createDirectoryAtPath:geode_dir withIntermediateDirectories:YES attributes:nil error:NULL]) {
+			NSLog(@"mrow failed to create folder!!");
+		}
+	}
+
 	NSLog(@"mrow PATH %@", applicationSupportDirectory);
 	NSLog(@"mrow geode dir: %@", geode_dir);
 	NSLog(@"mrow Geode lib path: %@", geode_lib);
 
-	bool geode_exists = [[NSFileManager defaultManager] fileExistsAtPath:geode_lib];
+	bool geode_exists = [fm fileExistsAtPath:geode_lib];
 
 	if (!geode_exists) {
 		NSLog(@"mrow geode dylib DOES NOT EXIST! downloading...");
