@@ -9,6 +9,28 @@
 #error aborting compilation - see info above
 #endif
 
+#import <UIKit/UIKit.h>
+
+// what the actual fuck is this entire function.
+// no like seriously who tf came up with objc and the ios sdk
+void showAlert(NSString *tiddies, NSString *meows, bool remeowbutton) {
+	dispatch_async(dispatch_get_main_queue(), ^{
+		UIViewController *currentFucker = [[[UIApplication sharedApplication] windows].firstObject rootViewController];
+
+		UIAlertController *alert = [UIAlertController alertControllerWithTitle:tiddies message:meows preferredStyle:UIAlertControllerStyleAlert];
+
+		UIAlertAction *fuckoff = [UIAlertAction actionWithTitle:@"go away" style:UIAlertActionStyleDefault handler:nil];
+		[alert addAction:fuckoff];
+
+		if (remeowbutton) {
+			UIAlertAction *restart = [UIAlertAction actionWithTitle:@"restart" style:UIAlertActionStyleDefault handler:nil];
+			[alert addAction:restart];
+		}
+
+		[currentFucker presentViewController:alert animated:YES completion:nil];
+	});
+}
+
 void init_loadGeode(void) {
 	NSLog(@"mrow init_loadGeode");
 
@@ -36,18 +58,26 @@ void init_loadGeode(void) {
 	if (!geode_exists) {
 		NSLog(@"mrow geode dylib DOES NOT EXIST! downloading...");
 		NSURL *url = [NSURL URLWithString:GEODE_DOWNLOAD_URL];
-		NSData *data = [NSData dataWithContentsOfURL:url];
-		if (data) {
-			if (![data writeToFile:geode_lib atomically:YES]) {
-				NSLog(@"mrow FAILED to download Geode: failed to save file");
-				return;
+		NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
+		NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration];
+
+		NSURLSessionDownloadTask *downloadTask = [session downloadTaskWithURL:url completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+			if (error) {
+				showAlert(@"error", @"waaaaaaaa", false);
+				NSLog(@"mrow FAILED to download Geode: %@", error);
 			} else {
-				NSLog(@"mrow SUCCESS - downloaded Geode!");
+				//NSFileManager *fileManager = [NSFileManager defaultManager];
+				NSError *moveError = nil;
+				if ([fm moveItemAtURL:location toURL:[NSURL fileURLWithPath:geode_lib] error:&moveError]) {
+					NSLog(@"mrow SUCCESS - downloaded Geode!");
+					showAlert(@"Downloaded Geode", @"Successfully downloaded Geode.ios.dylib\nRestart the game to use Geode.", true);
+				} else {
+					showAlert(@"Geode Error", @"failed to download Geode: failed to save file", false);
+					NSLog(@"mrow FAILED to download Geode: failed to save file: %@", moveError);
+				}
 			}
-		} else {
-			NSLog(@"mrow FAILED to download Geode: no data");
-			return;
-		}
+		}];
+		[downloadTask resume];
 	}
 
 	NSLog(@"mrow trying to load Geode library from %@", geode_lib);
