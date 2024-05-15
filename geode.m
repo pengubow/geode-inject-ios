@@ -37,7 +37,7 @@ void init_loadGeode(void) {
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *DocumentsDirectory = [paths firstObject];
 
-	NSString *geode_dir = [DocumentsDirectory stringByAppendingString:@"/geode/game/geode/"];
+	NSString *geode_dir = [DocumentsDirectory stringByAppendingString:@"/game/geode/"];
 	NSString *geode_lib = [geode_dir stringByAppendingString:@"Geode.ios.dylib"];
 
 	bool is_dir;
