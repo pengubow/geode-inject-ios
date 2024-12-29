@@ -59,12 +59,13 @@ __attribute__((constructor)) static void entry(int argc, char **argv, char *envp
     int pid = [[NSProcessInfo processInfo] processIdentifier];
     NSLog(@"mrow INIT");
     if (!isJailBroken()) {Pojavlaunchercheckforjit(pid);}
-   
+    sleep(1);
             
 
     init_bypassDyldLibValidation();
+    sleep(1);
     init_fixCydiaSubstrate();
-
+    sleep(1);
     init_loadGeode();
     
 }
